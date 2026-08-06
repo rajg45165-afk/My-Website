@@ -26,10 +26,31 @@
             scroll-behavior: smooth;
         }
 
+        /* Animated Smooth Gradient Background */
         body {
-            background-color: var(--bg-dark);
+            background: linear-gradient(-45deg, #0f051d, #290a38, #001f3f, #1a002c);
+            background-size: 400% 400%;
+            animation: gradientBG 12s ease infinite;
             color: var(--text-light);
             overflow-x: hidden;
+            position: relative;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Particle Overlay Screen */
+        #particleCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
         }
 
         /* Background Animated Glows */
@@ -210,6 +231,7 @@
             margin: 50px 0;
             border-top: 1px solid rgba(255, 255, 255, 0.05);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(5px);
         }
 
         .stat-box {
@@ -300,14 +322,15 @@
 
         .socials a {
             color: white;
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             margin: 0 12px;
             transition: 0.3s;
+            display: inline-block;
         }
 
         .socials a:hover {
             color: var(--primary);
-            transform: translateY(-3px);
+            transform: translateY(-4px);
         }
 
         /* Entrance Animations */
@@ -348,6 +371,9 @@
     </style>
 </head>
 <body>
+
+    <!-- Canvas overlay for background animated floating particles -->
+    <canvas id="particleCanvas"></canvas>
 
     <!-- Background Animated Blurs -->
     <div class="glow glow-1"></div>
@@ -457,13 +483,67 @@
     <!-- Footer -->
     <footer id="contact">
         <div class="socials">
-            <a href="#"><i class="fab fa-linkedin-in"></i></a>
-            <a href="#"><i class="fab fa-twitter"></i></a>
-            <a href="#"><i class="fab fa-instagram"></i></a>
-            <a href="#"><i class="fab fa-github"></i></a>
+            <!-- Twitter/X -->
+            <a href="https://twitter.com/RajGoswamiql" target="_blank" rel="noopener noreferrer" title="Twitter"><i class="fab fa-x-twitter"></i></a>
+            <!-- Facebook -->
+            <a href="https://www.facebook.com/RajGoswami" target="_blank" rel="noopener noreferrer" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <!-- Instagram -->
+            <a href="https://www.instagram.com/official_raj_goswami_94" target="_blank" rel="noopener noreferrer" title="Instagram"><i class="fab fa-instagram"></i></a>
+            <!-- WhatsApp -->
+            <a href="https://wa.me/919454327530" target="_blank" rel="noopener noreferrer" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
         </div>
         <p>&copy; 2026 Raj Goswami. All Rights Reserved.</p>
     </footer>
+
+    <!-- Background Particle Script -->
+    <script>
+        const canvas = document.getElementById('particleCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        const particles = [];
+        const particleCount = 65;
+
+        for (let i = 0; i < particleCount; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 3 + 1,
+                color: Math.random() > 0.5 ? '#ff4b2b' : '#ff416c',
+                vx: (Math.random() - 0.5) * 1.5,
+                vy: (Math.random() - 0.5) * 1.5
+            });
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            particles.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+
+                if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fillStyle = p.color;
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = p.color;
+                ctx.fill();
+            });
+
+            requestAnimationFrame(animateParticles);
+        }
+
+        animateParticles();
+    </script>
 
 </body>
 </html>
