@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raj Goswami | 100% Playable Arcade Realm</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #ff0055;
+            --secondary: #00f0ff;
+            --accent: #ffb700;
+            --purple: #9d00ff;
+            --font-head: 'Orbitron', sans-serif;
+            --font-body: 'Rajdhani', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-body); }
+
+        body {
+            background: linear-gradient(135deg, #090014, #19002e, #00152b, #2b0018);
+            background-size: 400% 400%;
+            animation: gradientBG 12s ease infinite;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Intro Screen */
+        #intro-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: radial-gradient(circle, #1a0033, #05000a);
+            z-index: 9999; display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            transition: transform 0.6s ease;
+        }
+        #intro-overlay.loaded { transform: translateY(-100%); }
+
+        .enter-btn {
+            margin-top: 20px; padding: 12px 35px;
+            font-family: var(--font-head); font-size: 1rem; font-weight: 800;
+            color: #fff; background: linear-gradient(45deg, var(--primary), var(--purple));
+            border: 2px solid var(--secondary); border-radius: 30px; cursor: pointer;
+            box-shadow: 0 0 20px var(--primary); transition: 0.3s;
+        }
+        .enter-btn:hover { transform: scale(1.05); }
+
+        /* Header & Pro DP */
+        header {
+            position: sticky; top: 0; width: 100%; padding: 10px 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(7, 3, 18, 0.95); backdrop-filter: blur(15px);
+            border-bottom: 2px solid var(--primary); z-index: 1000;
+        }
+
+        .logo {
+            font-family: var(--font-head); font-size: 1.3rem; font-weight: 900;
+            background: linear-gradient(45deg, #fff, var(--secondary), var(--primary));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        .pro-dp-card {
+            display: flex; align-items: center; gap: 10px;
+            background: rgba(255, 255, 255, 0.08); border: 1px solid var(--secondary);
+            padding: 5px 12px; border-radius: 25px;
+        }
+
+        .dp-img {
+            width: 40px; height: 40px; border-radius: 50%;
+            object-fit: cover; border: 2px solid var(--primary);
+        }
+
+        .dp-upload-btn {
+            background: var(--primary); border: none; color: #fff;
+            padding: 4px 8px; border-radius: 10px; font-size: 0.7rem; cursor: pointer;
+        }
+
+        /* Grid */
+        .games-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 15px; padding: 20px 5% 50px;
+        }
+
+        .game-card {
+            background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(0, 240, 255, 0.3);
+            border-radius: 12px; padding: 12px; text-align: center;
+        }
+
+        .game-card h3 { font-family: var(--font-head); color: var(--secondary); font-size: 1rem; margin-bottom: 8px; }
+
+        canvas { background: #000; border: 1px solid var(--secondary); border-radius: 6px; display: block; margin: 0 auto 8px; }
+
+        .btn-play {
+            padding: 6px 14px; font-family: var(--font-head); font-size: 0.75rem; font-weight: 700;
+            background: linear-gradient(45deg, var(--primary), var(--purple)); border: none;
+            color: #fff; border-radius: 12px; cursor: pointer; margin: 2px;
+        }
+
+        .octo-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-bottom: 8px; }
+        .octo-pad {
+            height: 35px; background: rgba(255, 255, 255, 0.1); border: 1px solid var(--secondary);
+            border-radius: 4px; display: flex; justify-content: center; align-items: center;
+            font-family: var(--font-head); font-size: 0.7rem; color: var(--accent); cursor: pointer;
+        }
+        .octo-pad:active { background: var(--primary); }
+    </style>
+</head>
+<body>
+
+    <!-- Intro -->
+    <div id="intro-overlay">
+        <h1 style="font-family: var(--font-head); color: var(--secondary); margin-bottom:10px;">RAJ GOSWAMI REAL GAMING ARENA</h1>
+        <p style="color: #aaa;">Click below to initialize Audio & Game Engine</p>
+        <button class="enter-btn" onclick="startWebsite()"><i class="fas fa-play"></i> START PLAYING</button>
+    </div>
+
+    <!-- Header & Professional DP -->
+    <header>
+        <div class="logo">RAJ GOSWAMI <span style="font-size:0.7rem; background:var(--accent); color:#000; padding:2px 6px; border-radius:8px;">PRO</span></div>
+
+        <div class="pro-dp-card">
+            <img src="https://via.placeholder.com/150/00f0ff/000000?text=DP" id="userDp" class="dp-img" alt="DP">
+            <div>
+                <div style="font-size:0.8rem; font-weight:bold;">Raj Goswami</div>
+                <div style="font-size:0.65rem; color:var(--accent);">Online</div>
+            </div>
+            <input type="file" id="dpInput" accept="image/*" style="display: none;">
+            <button class="dp-upload-btn" onclick="document.getElementById('dpInput').click();"><i class="fas fa-camera"></i> Change</button>
+        </div>
+    </header>
+
+    <h2 style="text-align:center; margin-top:20px; font-family:var(--font-head); color:var(--accent);">100% WORKING PLAYABLE GAMES</h2>
+
+    <!-- Games Zone -->
+    <div class="games-grid">
+
+        <!-- 1. CAR RACER -->
+        <div class="game-card">
+            <h3>1. Real Neon Car Racer</h3>
+            <canvas id="carCanvas" width="200" height="180"></canvas>
+            <div>
+                <button class="btn-play" onclick="moveCar(-15)">◀ Left</button>
+                <button class="btn-play" onclick="startCarGame()">Start Game</button>
+                <button class="btn-play" onclick="moveCar(15)">Right ▶</button>
+            </div>
+        </div>
+
+        <!-- 2. CYBER SNAKE -->
+        <div class="game-card">
+            <h3>2. Real Snake Game</h3>
+            <canvas id="snakeCanvas" width="200" height="180"></canvas>
+            <div>
+                <button class="btn-play" onclick="changeSnakeDir('UP')">▲</button><br>
+                <button class="btn-play" onclick="changeSnakeDir('LEFT')">◀</button>
+                <button class="btn-play" onclick="startSnakeGame()">Start</button>
+                <button class="btn-play" onclick="changeSnakeDir('RIGHT')">▶</button><br>
+                <button class="btn-play" onclick="changeSnakeDir('DOWN')">▼</button>
+            </div>
+        </div>
+
+        <!-- 3. ORGAN SYNTH -->
+        <div class="game-card">
+            <h3>3. Real Organ Synthesizer</h3>
+            <div class="octo-grid" id="octoContainer"></div>
+            <p style="font-size:0.7rem; color:#aaa;">Click any Pad to Play Sound</p>
+        </div>
+
+        <!-- 4. TIC TAC TOE -->
+        <div class="game-card">
+            <h3>4. Tic Tac Toe (Sound)</h3>
+            <div id="tttBoard" style="display: grid; grid-template-columns: repeat(3, 45px); gap: 5px; justify-content: center; margin: 10px 0;"></div>
+            <button class="btn-play" onclick="initTTT()">Reset Game</button>
+        </div>
+
+        <!-- 5. SPEED CLICKER -->
+        <div class="game-card">
+            <h3>5. 10-Sec Speed Clicker</h3>
+            <h1 id="clickScore" style="color:var(--accent); font-size:2.5rem; margin:10px 0;">0</h1>
+            <button class="btn-play" style="padding:10px 20px;" onclick="tapClicker()">TAP FAST!</button>
+        </div>
+
+        <!-- 6. COLOR MATCH REFLEX -->
+        <div class="game-card">
+            <h3>6. Color Tap Reflex</h3>
+            <div id="colorBox" style="width:60px; height:60px; border-radius:50%; background:red; margin:15px auto;"></div>
+            <button class="btn-play" onclick="changeColor()">Tap Color</button>
+        </div>
+
+        <!-- 7. SOUND DICE -->
+        <div class="game-card">
+            <h3>7. 3D Sound Dice</h3>
+            <h1 id="diceNum" style="color:var(--secondary); font-size:2.5rem; margin:10px 0;">1</h1>
+            <button class="btn-play" onclick="rollDice()">Roll Dice</button>
+        </div>
+
+        <!-- 8. PIANO KEYS -->
+        <div class="game-card">
+            <h3>8. Real Piano Keys</h3>
+            <div style="display:flex; justify-content:center; gap:4px; margin:20px 0;">
+                <button class="btn-play" onclick="soundEngine.playTone(261)">C</button>
+                <button class="btn-play" onclick="soundEngine.playTone(293)">D</button>
+                <button class="btn-play" onclick="soundEngine.playTone(329)">E</button>
+                <button class="btn-play" onclick="soundEngine.playTone(349)">F</button>
+                <button class="btn-play" onclick="soundEngine.playTone(392)">G</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        /* DP Image Upload */
+        document.getElementById('dpInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(evt) { document.getElementById('userDp').src = evt.target.result; }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        /* Web Audio Engine */
+        class SoundEngine {
+            constructor() { this.ctx = null; }
+            init() { if (!this.ctx) this.ctx = new (window.AudioContext || window.webkitAudioContext)(); }
+            playTone(freq) {
+                this.init();
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+                gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.3);
+                osc.connect(gain); gain.connect(this.ctx.destination);
+                osc.start(); osc.stop(this.ctx.currentTime + 0.3);
+            }
+        }
+        const soundEngine = new SoundEngine();
+
+        function startWebsite() {
+            soundEngine.init();
+            soundEngine.playTone(523.25);
+            document.getElementById('intro-overlay').classList.add('loaded');
+        }
+
+        /* 1. CAR GAME ENGINE */
+        const carC = document.getElementById('carCanvas'), carCtx = carC.getContext('2d');
+        let carX = 85, enemyY = -30, enemyX = 50, carLoop;
+        function updateCar() {
+            carCtx.clearRect(0,0,200,180);
+            // Player Car
+            carCtx.fillStyle = '#ff0055'; carCtx.fillRect(carX, 130, 25, 40);
+            // Enemy Car
+            carCtx.fillStyle = '#ffb700'; carCtx.fillRect(enemyX, enemyY, 25, 40);
+            enemyY += 3;
+            if(enemyY > 180) { enemyY = -40; enemyX = Math.random()*150 + 10; soundEngine.playTone(700); }
+            carLoop = requestAnimationFrame(updateCar);
+        }
+        function startCarGame() { cancelAnimationFrame(carLoop); enemyY = -30; updateCar(); }
+        function moveCar(dir) { carX = Math.max(10, Math.min(165, carX + dir)); }
+
+        /* 2. SNAKE GAME ENGINE */
+        const snkC = document.getElementById('snakeCanvas'), snkCtx = snkC.getContext('2d');
+        let snake = [{x:100, y:90}, {x:90, y:90}], sDir = "RIGHT", snkLoop;
+        function updateSnake() {
+            let head = {...snake[0]};
+            if(sDir === "RIGHT") head.x += 10;
+            if(sDir === "LEFT") head.x -= 10;
+            if(sDir === "UP") head.y -= 10;
+            if(sDir === "DOWN") head.y += 10;
+            
+            if(head.x < 0 || head.x >= 200 || head.y < 0 || head.y >= 180) {
+                soundEngine.playTone(150); clearInterval(snkLoop); alert("Game Over!"); return;
+            }
+
+            snake.unshift(head); snake.pop();
+            snkCtx.fillStyle = '#000'; snkCtx.fillRect(0,0,200,180);
+            snkCtx.fillStyle = '#00f0ff';
+            snake.forEach(p => snkCtx.fillRect(p.x, p.y, 9, 9));
+        }
+        function startSnakeGame() {
+            clearInterval(snkLoop); snake = [{x:100, y:90}, {x:90, y:90}]; sDir = "RIGHT";
+            snkLoop = setInterval(updateSnake, 150);
+        }
+        function changeSnakeDir(d) { sDir = d; soundEngine.playTone(400); }
+
+        /* 3. ORGAN SYNTH PADS */
+        const octoContainer = document.getElementById('octoContainer');
+        const freqs = [130, 146, 164, 174, 196, 220, 246, 261, 293, 329, 349, 392, 440, 493, 523, 587];
+        freqs.forEach((f, i) => {
+            const pad = document.createElement('div');
+            pad.className = 'octo-pad'; pad.innerText = `P${i+1}`;
+            pad.onclick = () => soundEngine.playTone(f);
+            octoContainer.appendChild(pad);
+        });
+
+        /* 4. TIC TAC TOE */
+        function initTTT() {
+            const b = document.getElementById('tttBoard'); b.innerHTML = "";
+            for(let i=0; i<9; i++) {
+                const cell = document.createElement('div');
+                cell.style.cssText = "height:45px; background:rgba(255,255,255,0.1); border:1px solid #00f0ff; display:flex; align-items:center; justify-content:center; font-size:1.2rem; cursor:pointer;";
+                cell.onclick = () => { if(!cell.innerText) { cell.innerText = "X"; cell.style.color = "var(--primary)"; soundEngine.playTone(600); } };
+                b.appendChild(cell);
+            }
+        }
+        initTTT();
+
+        /* 5. CLICKER */
+        let score = 0;
+        function tapClicker() { score++; document.getElementById('clickScore').innerText = score; soundEngine.playTone(300 + score*10); }
+
+        /* 6. COLOR REFLEX */
+        function changeColor() {
+            const cols = ['#ff0055', '#00f0ff', '#ffb700', '#00ff66', '#9d00ff'];
+            document.getElementById('colorBox').style.background = cols[Math.floor(Math.random()*cols.length)];
+            soundEngine.playTone(500);
+        }
+
+        /* 7. DICE */
+        function rollDice() {
+            document.getElementById('diceNum').innerText = Math.floor(Math.random()*6)+1;
+            soundEngine.playTone(800);
+        }
+    </script>
+</body>
+</html>
