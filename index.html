@@ -38,6 +38,7 @@
             scroll-behavior: smooth;
         }
 
+        /* ===== RGB Custom Cursor ===== */
         .cursor-dot, .cursor-outline {
             position: fixed;
             top: 0;
@@ -75,6 +76,29 @@
             50% { border-color: #3300ff; box-shadow: 0 0 15px #3300ff; }
             75% { border-color: #ffcc00; box-shadow: 0 0 15px #ffcc00; }
             100% { border-color: #ff0055; box-shadow: 0 0 15px #ff0055; }
+        }
+
+        /* ===== Stylish Left to Right Animated RGB Text ===== */
+        .stylish-rgb-text {
+            background: linear-gradient(
+                90deg, 
+                #ff0055, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff0055
+            );
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: rgbMoveLeftToRight 3s linear infinite;
+            display: inline-block;
+        }
+
+        @keyframes rgbMoveLeftToRight {
+            0% {
+                background-position: 0% center;
+            }
+            100% {
+                background-position: 200% center;
+            }
         }
 
         body {
@@ -118,9 +142,6 @@
         .logo {
             font-size: 1.8rem;
             font-weight: 800;
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
             text-transform: uppercase;
         }
 
@@ -197,11 +218,6 @@
         }
 
         .hero-text h1 { font-size: 3.5rem; line-height: 1.2; margin-bottom: 0.9375rem; }
-        .hero-text h1 span {
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
 
         .hero-text p { color: var(--text-gray); font-size: 1.1rem; margin-bottom: 1.875rem; line-height: 1.6; }
 
@@ -471,7 +487,7 @@
             }
 
             .cursor-dot, .cursor-outline {
-                display: none; /* Hide custom cursor on touch devices */
+                display: none;
             }
         }
     </style>
@@ -484,7 +500,7 @@
     <canvas id="particleCanvas"></canvas>
 
     <header>
-        <div class="logo">Raj Goswami</div>
+        <div class="logo stylish-rgb-text">Raj Goswami</div>
         <nav id="navMenu">
             <a href="#home">Home</a>
             <a href="#skills">Skills</a>
@@ -500,7 +516,7 @@
     <section class="hero" id="home">
         <div class="hero-text">
             <span class="badge">Founder & Owner</span>
-            <h1>Hi, I'm <span>Raj Goswami</span></h1>
+            <h1>Hi, I'm <span class="stylish-rgb-text">Raj Goswami</span></h1>
             <p>Welcome to my official digital space. Dedicated to building impactful digital experiences, leading modern ventures, and bringing creative ideas to life.</p>
             <div class="btn-group">
                 <a href="#gallery" class="btn">Explore Gallery <i class="fas fa-arrow-right"></i></a>
