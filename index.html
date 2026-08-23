@@ -16,8 +16,9 @@
             --card-bg: rgba(255, 255, 255, 0.05);
             --text-light: #ffffff;
             --text-gray: #b3b3b3;
-            --header-bg: rgba(15, 12, 32, 0.85);
+            --header-bg: rgba(15, 12, 32, 0.9);
             --saffron: #ff9933;
+            --chalisa-text: #ffffff;
         }
 
         .light-mode {
@@ -25,7 +26,8 @@
             --card-bg: rgba(0, 0, 0, 0.05);
             --text-light: #1e1e2f;
             --text-gray: #555555;
-            --header-bg: rgba(255, 255, 255, 0.85);
+            --header-bg: rgba(255, 255, 255, 0.9);
+            --chalisa-text: #222222;
         }
 
         * {
@@ -36,7 +38,18 @@
             scroll-behavior: smooth;
         }
 
-        /* Pure RGB Animated Cursor */
+        html { font-size: 16px; }
+        @media (max-width: 768px) { html { font-size: 14px; } }
+        @media (max-width: 480px) { html { font-size: 12px; } }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            overflow-x: hidden;
+            position: relative;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
         .cursor-dot, .cursor-outline {
             position: fixed;
             top: 0;
@@ -47,18 +60,20 @@
             transform: translate(-50%, -50%);
         }
 
-        .cursor-dot {
-            width: 8px;
-            height: 8px;
-            background: #fff;
-            animation: rgbShift 3s linear infinite;
-        }
+        @media (hover: hover) {
+            .cursor-dot {
+                width: 8px;
+                height: 8px;
+                background: #fff;
+                animation: rgbShift 3s linear infinite;
+            }
 
-        .cursor-outline {
-            width: 38px;
-            height: 38px;
-            border: 2px solid transparent;
-            animation: rgbBorderGlow 4s linear infinite;
+            .cursor-outline {
+                width: 38px;
+                height: 38px;
+                border: 2px solid transparent;
+                animation: rgbBorderGlow 4s linear infinite;
+            }
         }
 
         @keyframes rgbShift {
@@ -76,28 +91,24 @@
             100% { border-color: #ff0055; box-shadow: 0 0 15px #ff0055; }
         }
 
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-light);
-            overflow-x: hidden;
-            position: relative;
-            transition: background-color 0.4s ease, color 0.4s ease;
-        }
-
         #particleCanvas {
             position: fixed;
             top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: -1;
+            width: 100vw; height: 100vh;
+            z-index: 0;
             pointer-events: none;
         }
 
-        /* Header & Nav */
+        main, header, footer, section {
+            position: relative;
+            z-index: 1;
+        }
+
         header {
             position: fixed;
             top: 0;
             width: 100%;
-            padding: 18px 8%;
+            padding: 1.125rem 8%;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -116,114 +127,147 @@
             text-transform: uppercase;
         }
 
-        nav {
-            display: flex;
-            align-items: center;
-        }
+        nav { display: flex; align-items: center; gap: 1.25rem; }
 
         nav a {
             color: var(--text-light);
             text-decoration: none;
-            margin-left: 25px;
             font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .theme-btn, .btn, .btn-game, .btn-audio {
+            border: 2px solid transparent;
+            animation: rgbBorderGlow 4s linear infinite;
+            cursor: pointer;
             transition: 0.3s;
         }
 
         .theme-btn {
             background: rgba(255, 255, 255, 0.1);
-            border: 1px solid var(--primary);
             color: var(--text-light);
-            padding: 8px 14px;
+            padding: 0.5rem 1rem;
             border-radius: 20px;
-            cursor: pointer;
-            margin-left: 25px;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 0.5rem;
             font-size: 0.9rem;
-            transition: 0.3s;
         }
 
-        /* Hero Section */
         .hero {
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 0 8%;
-            padding-top: 100px;
+            padding-top: 6.25rem;
+            flex-wrap: wrap;
         }
 
-        .hero-text { max-width: 50%; }
+        .hero-text { flex: 1; min-width: 300px; padding-bottom: 2rem; }
 
         .badge {
             display: inline-block;
-            padding: 6px 16px;
+            padding: 0.375rem 1rem;
             background: rgba(255, 75, 43, 0.2);
             border: 1px solid var(--primary);
             border-radius: 30px;
             color: var(--primary);
             font-size: 0.9rem;
-            margin-bottom: 15px;
+            margin-bottom: 0.9375rem;
             font-weight: 600;
         }
 
-        .hero-text h1 { font-size: 3.5rem; line-height: 1.2; margin-bottom: 15px; }
+        .hero-text h1 { font-size: 3.5rem; line-height: 1.2; margin-bottom: 0.9375rem; }
         .hero-text h1 span {
             background: linear-gradient(45deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .hero-text p { color: var(--text-gray); font-size: 1.1rem; margin-bottom: 30px; line-height: 1.6; }
+        .hero-text p { color: var(--text-gray); font-size: 1.1rem; margin-bottom: 1.875rem; line-height: 1.6; }
 
-        .btn-group { display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
+        .btn-group { display: flex; gap: 1.25rem; align-items: center; flex-wrap: wrap; }
 
         .btn {
-            display: inline-flex; align-items: center; gap: 10px; padding: 12px 30px;
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            display: inline-flex; align-items: center; gap: 10px; padding: 0.75rem 1.875rem;
+            background: rgba(20, 15, 38, 0.8);
             color: white; text-decoration: none; border-radius: 30px; font-weight: 600;
-            box-shadow: 0 10px 20px rgba(255, 75, 43, 0.3); transition: 0.3s;
-            cursor: pointer;
         }
 
-        .btn-game {
-            background: linear-gradient(45deg, #00f2fe, #4facfe);
-            box-shadow: 0 10px 20px rgba(0, 242, 254, 0.3);
-        }
+        .btn-game { background: rgba(0, 50, 80, 0.8); }
 
         .btn-audio {
-            background: linear-gradient(45deg, #ff9933, #ff4b2b);
-            box-shadow: 0 10px 20px rgba(255, 153, 51, 0.3);
-            border: none;
+            background: rgba(40, 20, 10, 0.85);
             color: white;
-            margin-top: 15px;
+            margin-top: 0.9375rem;
             font-size: 1rem;
+            padding: 0.75rem 1.75rem;
+            border-radius: 30px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .hero-img {
-            width: 350px; height: 350px; border-radius: 50%; padding: 8px;
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            animation: floatImage 4s ease-in-out infinite;
+            flex: 1;
+            min-width: 300px;
+            max-width: 350px;
+            aspect-ratio: 1 / 1;
+            border-radius: 50%; 
+            padding: 8px;
+            border: 4px solid transparent;
+            animation: floatImage 4s ease-in-out infinite, rgbBorderGlow 4s linear infinite;
+            margin: 0 auto;
         }
 
         .hero-img img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
 
         @keyframes floatImage { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
 
-        /* Hanuman Chalisa Section with Animated RGB Border */
+        .skills-section { padding: 5rem 8%; }
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem;
+        }
+        .skill-card {
+            background: var(--card-bg);
+            padding: 2rem 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid transparent;
+            animation: rgbBorderGlow 5s linear infinite;
+            transition: 0.3s;
+            backdrop-filter: blur(10px);
+        }
+        .skill-card i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        .skill-card h3 { font-size: 1.1rem; }
+
         .chalisa-section {
-            padding: 80px 8%;
+            padding: 5rem 8%;
             display: flex;
             justify-content: center;
         }
 
         .chalisa-card {
-            background: linear-gradient(135deg, rgba(20, 15, 38, 0.9), rgba(10, 8, 20, 0.95));
+            background: linear-gradient(135deg, rgba(20, 15, 38, 0.95), rgba(10, 8, 20, 0.98));
             border: 3px solid transparent;
             border-radius: 20px;
-            padding: 40px;
-            max-width: 850px;
+            padding: 2.5rem;
             width: 100%;
             text-align: center;
             backdrop-filter: blur(10px);
@@ -242,16 +286,17 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
+            gap: 0.9375rem;
+            margin-bottom: 1.25rem;
         }
 
         .hanuman-img {
-            width: 160px;
-            height: 160px;
+            width: 10rem;
+            height: 10rem;
             border-radius: 50%;
-            border: 3px solid var(--saffron);
-            box-shadow: 0 0 25px var(--saffron);
+            padding: 4px;
+            border: 3px solid transparent;
+            animation: rgbBorderGlow 4s linear infinite;
             object-fit: cover;
         }
 
@@ -266,28 +311,32 @@
             font-family: 'Yatra One', serif;
             font-size: 1.15rem;
             line-height: 2.2;
-            color: var(--text-light);
+            color: var(--chalisa-text);
             max-height: 450px;
             overflow-y: auto;
-            padding-right: 15px;
+            padding-right: 0.9375rem;
             text-align: center;
-            margin-top: 20px;
+            margin-top: 1.25rem;
+            transition: color 0.4s ease;
         }
 
         .chalisa-text::-webkit-scrollbar { width: 6px; }
         .chalisa-text::-webkit-scrollbar-thumb { background: var(--saffron); border-radius: 10px; }
 
-        /* Gallery Section */
-        .gallery-section { padding: 80px 8%; }
-        .section-title { text-align: center; font-size: 2.5rem; margin-bottom: 50px; }
+        .gallery-section { padding: 5rem 8%; }
+        .section-title { text-align: center; font-size: 2.5rem; margin-bottom: 3.125rem; }
         .section-title span { color: var(--primary); }
 
         .gallery-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px;
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 1.5625rem;
         }
 
         .gallery-item {
             position: relative; border-radius: 15px; overflow: hidden; height: 300px; cursor: pointer;
+            border: 2px solid transparent;
+            animation: rgbBorderGlow 6s linear infinite;
         }
         .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
         .gallery-overlay {
@@ -298,31 +347,90 @@
         .gallery-item:hover img { transform: scale(1.1); }
         .gallery-item:hover .gallery-overlay { opacity: 1; }
 
-        footer { text-align: center; padding: 30px; background: rgba(0,0,0,0.4); color: var(--text-gray); }
-        .socials a { color: var(--text-light); font-size: 1.4rem; margin: 0 12px; transition: 0.3s; }
-        .socials a:hover { color: var(--primary); }
+        footer { text-align: center; padding: 1.875rem; background: rgba(0,0,0,0.4); color: var(--text-gray); }
+        
+        .socials {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 1.25rem;
+            flex-wrap: wrap;
+        }
+
+        .socials a { 
+            color: var(--text-light); 
+            font-size: 1.4rem; 
+            width: 2.8125rem;
+            height: 2.8125rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid transparent;
+            animation: rgbBorderGlow 4s linear infinite;
+            transition: 0.3s;
+        }
+
+        .socials a:hover { transform: translateY(-5px); }
 
         @media (max-width: 900px) {
-            .hero { flex-direction: column-reverse; text-align: center; padding-top: 120px; }
-            .hero-text { max-width: 100%; margin-top: 30px; }
-            .hero-img { width: 260px; height: 260px; }
-            .btn-group { justify-content: center; }
+            .hero-text h1 { font-size: 2.8rem; }
+            .chalisa-title { font-size: 1.8rem; }
+            .section-title { font-size: 2rem; }
+        }
+
+        @media (max-width: 768px) {
+            header { padding: 1rem 5%; }
+            .logo { font-size: 1.5rem; }
+            nav {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--header-bg);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                padding: 1rem 0;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+            nav.active { display: flex; }
+            nav a { margin: 0.5rem 0; font-size: 1.1rem; }
+            .theme-btn { margin-top: 0.5rem; width: max-content; }
+            .menu-toggle { display: block; }
+
+            .hero { padding: 0 5%; padding-top: 5rem; text-align: center; }
+            .hero-text h1 { font-size: 2.2rem; }
+            .hero-text p { font-size: 1rem; }
+            .btn-group { justify-content: center; gap: 10px; }
+            .btn { padding: 0.625rem 1.25rem; font-size: 0.9rem; }
+            
+            .hero-img { width: 220px; height: 220px; margin-top: 2rem; }
+
+            .skills-section, .chalisa-section, .gallery-section { padding: 3rem 5%; }
+            .chalisa-card { padding: 1.5rem; }
+            .hanuman-img { width: 7rem; height: 7rem; }
+            .chalisa-text { font-size: 1rem; line-height: 1.8; }
         }
     </style>
 </head>
 <body>
 
-    <!-- RGB Custom Cursor Elements -->
     <div class="cursor-dot"></div>
     <div class="cursor-outline"></div>
 
     <canvas id="particleCanvas"></canvas>
 
-    <!-- Header -->
     <header>
         <div class="logo">Raj Goswami</div>
-        <nav>
+        <button class="menu-toggle" id="menuToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <nav id="navMenu">
             <a href="#home">Home</a>
+            <a href="#skills">Skills</a>
             <a href="#chalisa">हनुमान चालीसा</a>
             <a href="#gallery">Gallery</a>
             <a href="#contact">Contact</a>
@@ -332,123 +440,150 @@
         </nav>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero" id="home">
-        <div class="hero-text">
-            <span class="badge">Founder & Owner</span>
-            <h1>Hi, I'm <span>Raj Goswami</span></h1>
-            <p>Welcome to my official digital space. Dedicated to building impactful digital experiences, leading modern ventures, and bringing creative ideas to life.</p>
-            <div class="btn-group">
-                <a href="#gallery" class="btn">Explore Gallery <i class="fas fa-arrow-right"></i></a>
-                <a href="game.html" class="btn btn-game">Play Game <i class="fas fa-gamepad"></i></a>
+    <main>
+        <section class="hero" id="home">
+            <div class="hero-text">
+                <span class="badge">Founder & Owner</span>
+                <h1>Hi, I'm <span>Raj Goswami</span></h1>
+                <p>Welcome to my official digital space. Dedicated to building impactful digital experiences, leading modern ventures, and bringing creative ideas to life.</p>
+                <div class="btn-group">
+                    <a href="#gallery" class="btn">Explore Gallery <i class="fas fa-arrow-right"></i></a>
+                    <a href="game.html" class="btn btn-game">Play Game <i class="fas fa-gamepad"></i></a>
+                </div>
             </div>
-        </div>
-        <div class="hero-img">
-            <img src="gg.png" alt="Raj Goswami - Owner">
-        </div>
-    </section>
+            <div class="hero-img">
+                <img src="gg.png" alt="Raj Goswami - Owner">
+            </div>
+        </section>
 
-    <!-- Hanuman Chalisa Section -->
-    <section class="chalisa-section" id="chalisa">
-        <div class="chalisa-card">
-            <div class="bhakti-header">
-                <img src="hh.jpg" onerror="this.onerror=null; this.src='https://i.ibb.co/6N6s7pX/hh.jpg';" alt="Shree Hanuman Ji" class="hanuman-img">
-                <h2 class="chalisa-title">🚩 श्री हनुमान चालीसा 🚩</h2>
-                
-                <!-- Guaranteed Working Web Audio Synthesizer Flute Player -->
-                <button class="btn btn-audio" id="musicToggleBtn" onclick="toggleAudio()">
-                    <i class="fas fa-play" id="audioIcon"></i> <span id="audioText">Play Relaxing Music (ON)</span>
-                </button>
+        <section class="skills-section" id="skills">
+            <h2 class="section-title">My <span>Skills</span></h2>
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <i class="fab fa-html5"></i>
+                    <h3>HTML5 & CSS3</h3>
+                </div>
+                <div class="skill-card">
+                    <i class="fab fa-js"></i>
+                    <h3>JavaScript</h3>
+                </div>
+                <div class="skill-card">
+                    <i class="fab fa-react"></i>
+                    <h3>React</h3>
+                </div>
+                <div class="skill-card">
+                    <i class="fab fa-node-js"></i>
+                    <h3>Node.js</h3>
+                </div>
+                <div class="skill-card">
+                    <i class="fas fa-database"></i>
+                    <h3>Database</h3>
+                </div>
+                <div class="skill-card">
+                    <i class="fas fa-code-branch"></i>
+                    <h3>Git & GitHub</h3>
+                </div>
             </div>
+        </section>
 
-            <div class="chalisa-text">
-                <strong>॥ दोहा ॥</strong><br>
-                श्रीगुरु चरन सरोज रज निज मन मुकुरु सुधारि।<br>
-                बरनऊ रघुबर बिमल जसु जो दायकु फल चारि॥<br>
-                बुद्धिहीन तनु जानिके सुमिरौ पवन-कुमार।<br>
-                बल बुद्धि बिद्या देहु मोहिं हरहु कलेस बिकार॥<br><br>
+        <section class="chalisa-section" id="chalisa">
+            <div class="chalisa-card">
+                <div class="bhakti-header">
+                    <img src="hh.jpg" alt="Shree Hanuman Ji" class="hanuman-img">
+                    <h2 class="chalisa-title">🚩 श्री हनुमान चालीसा 🚩</h2>
+                    
+                    <button class="btn-audio" id="musicToggleBtn" onclick="toggleOrganMusic()">
+                        <i class="fas fa-play" id="audioIcon"></i> <span id="audioText">Play Soft Music</span>
+                    </button>
+                </div>
 
-                <strong>॥ चौपाई ॥</strong><br>
-                जय हनुमान ज्ञान गुन सागर। जय कपीस तिहुं लोक उजागर॥<br>
-                रामदूत अतुलित बल धामा। अंजनि-पुत्र पवनसुत नामा॥<br>
-                महाबीर बिक्रम बजरंगी। कुमति निवार सुमति के संगी॥<br>
-                कंचन बरन बिराज सुबेसा। कानन कुंडल कुंचित केसा॥<br>
-                हाथ बज्र ओ ध्वजा बिराजै। कांधे मूंज जनेऊ साजै॥<br>
-                संकर सुवन केसरीनंदन। तेज प्रताप महा जग बन्दन॥<br>
-                विद्यावान गुनी अति चातुर। राम काज करिबे को आतुर॥<br>
-                प्रभु चरित्र सुनिबे को रसिया। राम लखन सीता मन बसिया॥<br>
-                सूक्ष्म रूप धरि सियहिं दिखावा। बिकट रूप धरि लंक जरावा॥<br>
-                भीम रूप धरि असुर संहारे। रामचंद्र के काज संवारे॥<br>
-                लाय सजीवन लखन जियाये। श्रीरघुबीर हरषि उर लाये॥<br>
-                रघुपति कीन्ही बहुत बड़ाई। तुम मम प्रिय भरतहि सम भाई॥<br>
-                सहस बदन तुम्हरो जस गावैं। अस कहि श्रीपति कण्ठ लगावैं॥<br>
-                सनकादिक ब्रह्मादि मुनीसा। नारद सारद सहित अहीसा॥<br>
-                जम कुबेर दिगपाल जहां ते। कबि कोबिद कहि सके कहां ते॥<br>
-                तुम उपकार सुग्रीवहिं कीन्हा। राम मिलाय राज पद दीन्हा॥<br>
-                तुम्हरो मंत्र बिभीषन माना। लंकेस्वर भए सब जग जाना॥<br>
-                जुग सहस्र जोजन पर भानू। लील्यो ताहि मधुर फल जानू॥<br>
-                प्रभु मुद्रिका मेलि मुख माहीं। जलधि लांघि गये अचरज नाहीं॥<br>
-                दुर्गम काज जगत के जेते। सुगम अनुग्रह तुम्हरे तेते॥<br>
-                राम दुआरे तुम रखवारे। होत न आज्ञा बिनु पैसारे॥<br>
-                सब सुख लहै तुम्हारी सरना। तुम रक्षक काहू को डर ना॥<br>
-                आपन तेज सम्हारो आपै। तीनों लोक हांक तें कांपै॥<br>
-                भूत पिसाच निकट नहिं आवै। महाबीर जब नाम सुनावै॥<br>
-                नासै रोग हरै सब पीरा। जपत निरंतर हनुमत बीरा॥<br>
-                संकट तें हनुमान छुड़ावै। मन क्रम बचन ध्यान जो लावै॥<br>
-                सब पर राम तपस्वी राजा। तिन के काज सकल तुम साजा॥<br>
-                और मनोरथ जो कोई लावै। सोइ अमित जीवन फल पावै॥<br>
-                चारों जुग परताप तुम्हारा। है परसिद्ध जगत उजियारा॥<br>
-                साधु सन्त के तुम रखवारे। असुर निकंदन राम दुलारे॥<br>
-                अष्ट सिद्धि नौ निधि के दाता। अस बर दीन्ह जानकी माता॥<br>
-                राम रसायन तुम्हरे पासा। सदा रहो रघुपति के दासा॥<br>
-                तुम्हरे भजन राम को पावै। जनम जनम के दुख बिसरावै॥<br>
-                अन्त काल रघुबर पुर जाई। जहां जन्म हरि-भक्त कहाई॥<br>
-                और देवता चित्त न धरई। हनुमत सेइ सर्ब सुख करई॥<br>
-                संकट कटै मिटै सब पीरा। जो सुमिरै हनुमत बलबीरा॥<br>
-                जै जै जै हनुमान गोसाईं। कृपा करहु गुरुदेव की नाईं॥<br>
-                जो सत बार पाठ कर कोई। छूटहि बंदि महा सुख होई॥<br>
-                जो यह पढ़ै हनुमान चालीसा। होय सिद्ध साखी गौरीसा॥<br>
-                तुलसीदास सदा हरि चेरा। कीजै नाथ हृदय मंह डेरा॥<br><br>
+                <div class="chalisa-text" id="chalisaContent">
+                    <strong>॥ दोहा ॥</strong><br>
+                    श्रीगुरु चरन सरोज रज निज मन मुकुरु सुधारि।<br>
+                    बरनऊ रघुबर बिमल जसु जो दायकु फल चारि॥<br>
+                    बुद्धिहीन तनु जानिके सुमिरौ पवन-कुमार।<br>
+                    बल बुद्धि बिद्या देहु मोहिं हरहु कलेस बिकार॥<br><br>
 
-                <strong>॥ दोहा ॥</strong><br>
-                पवनतनय संकट हरन मंगल मूरति रूप।<br>
-                राम लखन सीता सहित हृदय बसहु सुर भूप॥
-            </div>
-        </div>
-    </section>
+                    <strong>॥ चौपाई ॥</strong><br>
+                    जय हनुमान ज्ञान गुन सागर। जय कपीस तिहुं लोक उजागर॥<br>
+                    रामदूत अतुलित बल धामा। अंजनि-पुत्र पवनसुत नामा॥<br>
+                    महाबीर बिक्रम बजरंगी। कुमति निवार सुमति के संगी॥<br>
+                    कंचन बरन बिराज सुबेसा। कानन कुंडल कुंचित केसा॥<br>
+                    हाथ बज्र ओ ध्वजा बिराजै। कांधे मूंज जनेऊ साजै॥<br>
+                    संकर सुवन केसरीनंदन। तेज प्रताप महा जग बन्दन॥<br>
+                    विद्यावान गुनी अति चातुर। राम काज करिबे को आतुर॥<br>
+                    प्रभु चरित्र सुनिबे को रसिया। राम लखन सीता मन बसिया॥<br>
+                    सूक्ष्म रूप धरि सियहिं दिखावा। बिकट रूप धरि लंक जरावा॥<br>
+                    भीम रूप धरि असुर संहारे। रामचंद्र के काज संवारे॥<br>
+                    लाय सजीवन लखन जियाये। श्रीरघुबीर हरषि उर लाये॥<br>
+                    रघुपति कीन्ही बहुत बड़ाई। तुम मम प्रिय भरतहि सम भाई॥<br>
+                    सहस बदन तुम्हरो जस गावैं। अस कहि श्रीपति कण्ठ लगावैं॥<br>
+                    सनकादिक ब्रह्मादि मुनीसा। नारद सारद सहित अहीसा॥<br>
+                    जम कुबेर दिगपाल जहां ते। कबि कोबिद कहि सके कहां ते॥<br>
+                    तुम उपकार सुग्रीवहिं कीन्हा। राम मिलाय राज पद दीन्हा॥<br>
+                    तुम्हरो मंत्र बिभीषन माना। लंकेस्वर भए सब जग जाना॥<br>
+                    जुग सहस्र जोजन पर भानू। लील्यो ताहि मधुर फल जानू॥<br>
+                    प्रभु मुद्रिका मेलि मुख माहीं। जलधि लांघि गये अचरज नाहीं॥<br>
+                    दुर्गम काज जगत के जेते। सुगम अनुग्रह तुम्हरे तेते॥<br>
+                    राम दुआरे तुम रखवारे। होत न आज्ञा बिनु पैसारे॥<br>
+                    सब सुख लहै तुम्हारी सरना। तुम रक्षक काहू को डर ना॥<br>
+                    आपन तेज सम्हारो आपै। तीनों लोक हांक तें कांपै॥<br>
+                    भूत पिसाच निकट नहिं आवै। महाबीर जब नाम सुनावै॥<br>
+                    नासै रोग हरै सब पीरा। जपत निरंतर हनुमत बीरा॥<br>
+                    संकट तें हनुमान छुड़ावै। मन क्रम बचन ध्यान जो लावै॥<br>
+                    सब पर राम तपस्वी राजा। तिन के काज सकल तुम साजा॥<br>
+                    और मनोरथ जो कोई लावै। सोइ अमित जीवन फल पावै॥<br>
+                    चारों जुग परताप तुम्हारा। है परसिद्ध जगत उजियारा॥<br>
+                    साधु सन्त के तुम रखवारे। असुर निकंदन राम दुलारे॥<br>
+                    अष्ट सिद्धि नौ निधि के दाता। अस बर दीन्ह जानकी माता॥<br>
+                    राम रसायन तुम्हरे पासा। सदा रहो रघुपति के दासा॥<br>
+                    तुम्हरे भजन राम को पावै। जनम जनम के दुख बिसरावै॥<br>
+                    अन्त काल रघुबर पुर जाई। जहां जन्म हरि-भक्त कहाई॥<br>
+                    और देवता चित्त न धरई। हनुमत सेइ सर्ब सुख करई॥<br>
+                    संकट कटै मिटै सब पीरा। जो सुमिरै हनुमत बलबीरा॥<br>
+                    जै जै जै हनुमान गोसाईं। कृपा करहु गुरुदेव की नाईं॥<br>
+                    जो सत बार पाठ कर कोई। छूटहि बंदि महा सुख होई॥<br>
+                    जो यह पढ़ै हनुमान चालीसा। होय सिद्ध साखी गौरीसा॥<br>
+                    तुलसीदास सदा हरि चेरा। कीजै नाथ हृदय मंह डेरा॥<br><br>
 
-    <!-- Gallery Section -->
-    <section class="gallery-section" id="gallery">
-        <h2 class="section-title">Photo <span>Gallery</span></h2>
-        <div class="gallery-grid">
-            <div class="gallery-item">
-                <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80" alt="Workspace">
-                <div class="gallery-overlay"><h3>Headquarters</h3><p>Where ideas turn into reality</p></div>
+                    <strong>॥ दोहा ॥</strong><br>
+                    पवनतनय संकट हरन मंगल मूरति रूप।<br>
+                    राम लखन सीता सहित हृदय बसहु सुर भूप॥
+                </div>
             </div>
-            <div class="gallery-item">
-                <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80" alt="Team Work">
-                <div class="gallery-overlay"><h3>Leadership</h3><p>Guiding teams to success</p></div>
-            </div>
-            <div class="gallery-item">
-                <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80" alt="Architecture">
-                <div class="gallery-overlay"><h3>Modern Vision</h3><p>Building for the future</p></div>
-            </div>
-            <div class="gallery-item">
-                <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80" alt="Events">
-                <div class="gallery-overlay"><h3>Keynote Events</h3><p>Sharing industry insights</p></div>
-            </div>
-            <div class="gallery-item">
-                <img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=800&q=80" alt="Business">
-                <div class="gallery-overlay"><h3>Strategy</h3><p>Planning sustainable growth</p></div>
-            </div>
-            <div class="gallery-item">
-                <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80" alt="Collaboration">
-                <div class="gallery-overlay"><h3>Global Network</h3><p>Connecting across borders</p></div>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Footer -->
+        <section class="gallery-section" id="gallery">
+            <h2 class="section-title">Photo <span>Gallery</span></h2>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80" alt="Workspace">
+                    <div class="gallery-overlay"><h3>Headquarters</h3><p>Where ideas turn into reality</p></div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80" alt="Team Work">
+                    <div class="gallery-overlay"><h3>Leadership</h3><p>Guiding teams to success</p></div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80" alt="Architecture">
+                    <div class="gallery-overlay"><h3>Modern Vision</h3><p>Building for the future</p></div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80" alt="Events">
+                    <div class="gallery-overlay"><h3>Keynote Events</h3><p>Sharing industry insights</p></div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=800&q=80" alt="Business">
+                    <div class="gallery-overlay"><h3>Strategy</h3><p>Planning sustainable growth</p></div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80" alt="Collaboration">
+                    <div class="gallery-overlay"><h3>Global Network</h3><p>Connecting across borders</p></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
     <footer id="contact">
         <div class="socials">
             <a href="https://www.youtube.com/@RajGoswami-501" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
@@ -460,52 +595,71 @@
         <p>&copy; 2026 Raj Goswami. All Rights Reserved.</p>
     </footer>
 
-    <!-- Scripts -->
     <script>
-        // Synchronized Instant RGB Cursor
         const dot = document.querySelector('.cursor-dot');
         const outline = document.querySelector('.cursor-outline');
 
         window.addEventListener('mousemove', (e) => {
-            const x = e.clientX;
-            const y = e.clientY;
-            dot.style.left = `${x}px`;
-            dot.style.top = `${y}px`;
-            outline.style.left = `${x}px`;
-            outline.style.top = `${y}px`;
+            if (dot && outline) {
+                dot.style.left = `${e.clientX}px`;
+                dot.style.top = `${e.clientY}px`;
+                outline.style.left = `${e.clientX}px`;
+                outline.style.top = `${e.clientY}px`;
+            }
         });
 
-        // Web Audio Synthesizer Flute Generator (100% Guaranteed to Play / No External Links Required)
+        const menuToggle = document.getElementById('menuToggle');
+        const navMenu = document.getElementById('navMenu');
+
+        menuToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        navMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+            });
+        });
+
         let audioCtx = null;
         let isPlaying = false;
-        let intervalId = null;
+        let noteIndex = 0;
+        let timerId = null;
 
-        const fluteNotes = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25, 587.33, 659.25]; // Indian Flute Scales (Sa Re Ga Ma Pa Dha Ni Sa)
+        const softNotes = [261.63, 293.66, 329.63, 392.00, 440.00, 392.00, 329.63, 293.66];
 
-        function playFluteNote() {
+        function playSoftNote() {
             if (!isPlaying || !audioCtx) return;
+
+            let now = audioCtx.currentTime;
+            let freq = softNotes[noteIndex];
+            noteIndex = (noteIndex + 1) % softNotes.length;
 
             let osc = audioCtx.createOscillator();
             let gain = audioCtx.createGain();
+            let filter = audioCtx.createBiquadFilter();
 
-            // Sine wave produces soft flute tone
             osc.type = 'sine';
-            let note = fluteNotes[Math.floor(Math.random() * fluteNotes.length)];
-            osc.frequency.setValueAtTime(note, audioCtx.currentTime);
+            osc.frequency.setValueAtTime(freq, now);
 
-            // Envelope for smooth ambient sound
-            gain.gain.setValueAtTime(0, audioCtx.currentTime);
-            gain.gain.linearRampToValueAtTime(0.15, audioCtx.currentTime + 0.8);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 3.0);
+            filter.type = 'lowpass';
+            filter.frequency.setValueAtTime(600, now);
 
-            osc.connect(gain);
+            gain.gain.setValueAtTime(0.001, now);
+            gain.gain.linearRampToValueAtTime(0.04, now + 0.3);
+            gain.gain.exponentialRampToValueAtTime(0.0001, now + 1.2);
+
+            osc.connect(filter);
+            filter.connect(gain);
             gain.connect(audioCtx.destination);
 
-            osc.start();
-            osc.stop(audioCtx.currentTime + 3.2);
+            osc.start(now);
+            osc.stop(now + 1.3);
+
+            timerId = setTimeout(playSoftNote, 800);
         }
 
-        function toggleAudio() {
+        function toggleOrganMusic() {
             const audioIcon = document.getElementById('audioIcon');
             const audioText = document.getElementById('audioText');
 
@@ -518,19 +672,17 @@
                     audioCtx.resume();
                 }
                 isPlaying = true;
-                playFluteNote();
-                intervalId = setInterval(playFluteNote, 1800);
+                playSoftNote();
                 audioIcon.className = 'fas fa-pause';
-                audioText.innerText = 'Pause Music (OFF)';
+                audioText.innerText = 'Pause Music';
             } else {
                 isPlaying = false;
-                clearInterval(intervalId);
+                clearTimeout(timerId);
                 audioIcon.className = 'fas fa-play';
-                audioText.innerText = 'Play Relaxing Music (ON)';
+                audioText.innerText = 'Play Soft Music';
             }
         }
 
-        // Theme Toggle
         function toggleTheme() {
             document.body.classList.toggle('light-mode');
             const icon = document.getElementById('themeIcon');
@@ -545,7 +697,6 @@
             }
         }
 
-        // Particle Canvas Background
         const canvas = document.getElementById('particleCanvas');
         const ctx = canvas.getContext('2d');
 
