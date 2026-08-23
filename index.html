@@ -7,7 +7,7 @@
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Yatra+One&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #ff4b2b;
@@ -16,6 +16,16 @@
             --card-bg: rgba(255, 255, 255, 0.05);
             --text-light: #ffffff;
             --text-gray: #b3b3b3;
+            --header-bg: rgba(15, 12, 32, 0.85);
+            --saffron: #ff9933;
+        }
+
+        .light-mode {
+            --bg-dark: #f5f6fa;
+            --card-bg: rgba(0, 0, 0, 0.05);
+            --text-light: #1e1e2f;
+            --text-gray: #555555;
+            --header-bg: rgba(255, 255, 255, 0.85);
         }
 
         * {
@@ -26,52 +36,60 @@
             scroll-behavior: smooth;
         }
 
-        /* Animated Smooth Gradient Background */
-        body {
-            background: linear-gradient(-45deg, #0f051d, #290a38, #001f3f, #1a002c);
-            background-size: 400% 400%;
-            animation: gradientBG 12s ease infinite;
-            color: var(--text-light);
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* Particle Overlay Screen */
-        #particleCanvas {
+        /* Pure RGB Animated Cursor */
+        .cursor-dot, .cursor-outline {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+        }
+
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background: #fff;
+            animation: rgbShift 3s linear infinite;
+        }
+
+        .cursor-outline {
+            width: 38px;
+            height: 38px;
+            border: 2px solid transparent;
+            animation: rgbBorderGlow 4s linear infinite;
+        }
+
+        @keyframes rgbShift {
+            0% { background-color: #ff0000; box-shadow: 0 0 12px #ff0000; }
+            33% { background-color: #00ff00; box-shadow: 0 0 12px #00ff00; }
+            66% { background-color: #0088ff; box-shadow: 0 0 12px #0088ff; }
+            100% { background-color: #ff0000; box-shadow: 0 0 12px #ff0000; }
+        }
+
+        @keyframes rgbBorderGlow {
+            0% { border-color: #ff0055; box-shadow: 0 0 15px #ff0055; }
+            25% { border-color: #00ffcc; box-shadow: 0 0 15px #00ffcc; }
+            50% { border-color: #3300ff; box-shadow: 0 0 15px #3300ff; }
+            75% { border-color: #ffcc00; box-shadow: 0 0 15px #ffcc00; }
+            100% { border-color: #ff0055; box-shadow: 0 0 15px #ff0055; }
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            overflow-x: hidden;
+            position: relative;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        #particleCanvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             z-index: -1;
             pointer-events: none;
-        }
-
-        /* Background Animated Glows */
-        .glow {
-            position: fixed;
-            width: 300px;
-            height: 300px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            filter: blur(120px);
-            opacity: 0.3;
-            z-index: -1;
-            animation: floatGlow 10s infinite alternate ease-in-out;
-        }
-
-        .glow-1 { top: -50px; left: -50px; }
-        .glow-2 { bottom: -50px; right: -50px; animation-delay: -5s; }
-
-        @keyframes floatGlow {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(50px, 50px) scale(1.2); }
         }
 
         /* Header & Nav */
@@ -79,11 +97,11 @@
             position: fixed;
             top: 0;
             width: 100%;
-            padding: 20px 8%;
+            padding: 18px 8%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(15, 12, 32, 0.8);
+            background: var(--header-bg);
             backdrop-filter: blur(10px);
             z-index: 1000;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -96,31 +114,34 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-transform: uppercase;
-            letter-spacing: 1px;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
         }
 
         nav a {
             color: var(--text-light);
             text-decoration: none;
-            margin-left: 30px;
+            margin-left: 25px;
             font-weight: 500;
             transition: 0.3s;
-            position: relative;
         }
 
-        nav a::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -5px;
-            left: 0;
-            background: var(--primary);
+        .theme-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--primary);
+            color: var(--text-light);
+            padding: 8px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-left: 25px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.9rem;
             transition: 0.3s;
-        }
-
-        nav a:hover::after {
-            width: 100%;
         }
 
         /* Hero Section */
@@ -130,13 +151,10 @@
             align-items: center;
             justify-content: space-between;
             padding: 0 8%;
-            padding-top: 80px;
+            padding-top: 100px;
         }
 
-        .hero-text {
-            max-width: 50%;
-            animation: slideLeft 1s ease forwards;
-        }
+        .hero-text { max-width: 50%; }
 
         .badge {
             display: inline-block;
@@ -150,280 +168,167 @@
             font-weight: 600;
         }
 
-        .hero-text h1 {
-            font-size: 3.5rem;
-            line-height: 1.2;
-            margin-bottom: 15px;
-        }
-
+        .hero-text h1 { font-size: 3.5rem; line-height: 1.2; margin-bottom: 15px; }
         .hero-text h1 span {
             background: linear-gradient(45deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .hero-text p {
-            color: var(--text-gray);
-            font-size: 1.1rem;
-            margin-bottom: 30px;
-            line-height: 1.6;
-        }
+        .hero-text p { color: var(--text-gray); font-size: 1.1rem; margin-bottom: 30px; line-height: 1.6; }
 
-        /* Button Container */
-        .btn-group {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
+        .btn-group { display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
 
         .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 12px 30px;
+            display: inline-flex; align-items: center; gap: 10px; padding: 12px 30px;
             background: linear-gradient(45deg, var(--primary), var(--secondary));
-            color: white;
-            text-decoration: none;
-            border-radius: 30px;
-            font-weight: 600;
-            box-shadow: 0 10px 20px rgba(255, 75, 43, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .btn:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 15px 25px rgba(255, 75, 43, 0.5);
-        }
-
-        /* Stylish Game Button */
-        .btn-game {
-            background: linear-gradient(45deg, #00f2fe, #4facfe);
-            box-shadow: 0 10px 20px rgba(0, 242, 254, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-game:hover {
-            transform: translateY(-4px) scale(1.02);
-            box-shadow: 0 15px 30px rgba(0, 242, 254, 0.6);
-        }
-
-        .btn-game i {
-            font-size: 1.1rem;
-            animation: pulseIcon 1.5s infinite alternate;
-        }
-
-        @keyframes pulseIcon {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.2); }
-        }
-
-        /* Profile Image Floating Animation */
-        .hero-img {
-            position: relative;
-            width: 380px;
-            height: 380px;
-            border-radius: 50%;
-            padding: 8px;
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            animation: floatImage 4s ease-in-out infinite, slideRight 1s ease forwards;
-        }
-
-        .hero-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
-            background-color: var(--bg-dark);
-        }
-
-        @keyframes floatImage {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
-
-        /* Section Title */
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 50px;
-            position: relative;
-        }
-
-        .section-title span {
-            color: var(--primary);
-        }
-
-        /* Stats Counter Section */
-        .stats {
-            display: flex;
-            justify-content: space-around;
-            padding: 60px 8%;
-            background: var(--card-bg);
-            margin: 50px 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(5px);
-        }
-
-        .stat-box {
-            text-align: center;
-        }
-
-        .stat-box h2 {
-            font-size: 2.8rem;
-            color: var(--primary);
-        }
-
-        .stat-box p {
-            color: var(--text-gray);
-        }
-
-        /* Gallery Grid Section */
-        .gallery-section {
-            padding: 80px 8%;
-        }
-
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-        }
-
-        .gallery-item {
-            position: relative;
-            border-radius: 15px;
-            overflow: hidden;
-            height: 300px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            color: white; text-decoration: none; border-radius: 30px; font-weight: 600;
+            box-shadow: 0 10px 20px rgba(255, 75, 43, 0.3); transition: 0.3s;
             cursor: pointer;
         }
 
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: 0.5s ease;
+        .btn-game {
+            background: linear-gradient(45deg, #00f2fe, #4facfe);
+            box-shadow: 0 10px 20px rgba(0, 242, 254, 0.3);
         }
 
-        .gallery-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
+        .btn-audio {
+            background: linear-gradient(45deg, #ff9933, #ff4b2b);
+            box-shadow: 0 10px 20px rgba(255, 153, 51, 0.3);
+            border: none;
+            color: white;
+            margin-top: 15px;
+            font-size: 1rem;
+        }
+
+        .hero-img {
+            width: 350px; height: 350px; border-radius: 50%; padding: 8px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            animation: floatImage 4s ease-in-out infinite;
+        }
+
+        .hero-img img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+
+        @keyframes floatImage { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+
+        /* Hanuman Chalisa Section with Animated RGB Border */
+        .chalisa-section {
+            padding: 80px 8%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .chalisa-card {
+            background: linear-gradient(135deg, rgba(20, 15, 38, 0.9), rgba(10, 8, 20, 0.95));
+            border: 3px solid transparent;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 850px;
             width: 100%;
-            height: 100%;
-            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            text-align: center;
+            backdrop-filter: blur(10px);
+            animation: rgbBoxBorder 5s linear infinite;
+        }
+
+        @keyframes rgbBoxBorder {
+            0% { border-color: #ff0055; box-shadow: 0 0 25px rgba(255, 0, 85, 0.5); }
+            25% { border-color: #00ffcc; box-shadow: 0 0 25px rgba(0, 255, 204, 0.5); }
+            50% { border-color: #3300ff; box-shadow: 0 0 25px rgba(51, 0, 255, 0.5); }
+            75% { border-color: #ffcc00; box-shadow: 0 0 25px rgba(255, 204, 0, 0.5); }
+            100% { border-color: #ff0055; box-shadow: 0 0 25px rgba(255, 0, 85, 0.5); }
+        }
+
+        .bhakti-header {
             display: flex;
             flex-direction: column;
-            justify-content: flex-end;
-            padding: 20px;
-            opacity: 0;
-            transition: 0.4s ease;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
         }
 
-        .gallery-item:hover img {
-            transform: scale(1.15) rotate(2deg);
+        .hanuman-img {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            border: 3px solid var(--saffron);
+            box-shadow: 0 0 25px var(--saffron);
+            object-fit: cover;
         }
 
-        .gallery-item:hover .gallery-overlay {
-            opacity: 1;
+        .chalisa-title {
+            font-family: 'Yatra One', cursive;
+            font-size: 2.2rem;
+            color: var(--saffron);
+            text-shadow: 0 0 10px rgba(255, 153, 51, 0.5);
         }
 
-        .gallery-overlay h3 {
-            font-size: 1.3rem;
-            color: #fff;
-        }
-
-        .gallery-overlay p {
-            font-size: 0.9rem;
-            color: var(--text-gray);
-        }
-
-        /* Footer */
-        footer {
+        .chalisa-text {
+            font-family: 'Yatra One', serif;
+            font-size: 1.15rem;
+            line-height: 2.2;
+            color: var(--text-light);
+            max-height: 450px;
+            overflow-y: auto;
+            padding-right: 15px;
             text-align: center;
-            padding: 30px;
-            background: rgba(0, 0, 0, 0.5);
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            color: var(--text-gray);
+            margin-top: 20px;
         }
 
-        .socials {
-            margin-bottom: 15px;
+        .chalisa-text::-webkit-scrollbar { width: 6px; }
+        .chalisa-text::-webkit-scrollbar-thumb { background: var(--saffron); border-radius: 10px; }
+
+        /* Gallery Section */
+        .gallery-section { padding: 80px 8%; }
+        .section-title { text-align: center; font-size: 2.5rem; margin-bottom: 50px; }
+        .section-title span { color: var(--primary); }
+
+        .gallery-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px;
         }
 
-        .socials a {
-            color: white;
-            font-size: 1.4rem;
-            margin: 0 12px;
-            transition: 0.3s;
-            display: inline-block;
+        .gallery-item {
+            position: relative; border-radius: 15px; overflow: hidden; height: 300px; cursor: pointer;
         }
-
-        .socials a:hover {
-            color: var(--primary);
-            transform: translateY(-4px);
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .gallery-overlay {
+            position: absolute; bottom: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; opacity: 0; transition: 0.4s;
         }
+        .gallery-item:hover img { transform: scale(1.1); }
+        .gallery-item:hover .gallery-overlay { opacity: 1; }
 
-        /* Entrance Animations */
-        @keyframes slideLeft {
-            from { opacity: 0; transform: translateX(-50px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
+        footer { text-align: center; padding: 30px; background: rgba(0,0,0,0.4); color: var(--text-gray); }
+        .socials a { color: var(--text-light); font-size: 1.4rem; margin: 0 12px; transition: 0.3s; }
+        .socials a:hover { color: var(--primary); }
 
-        @keyframes slideRight {
-            from { opacity: 0; transform: translateX(50px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        /* Responsive Design */
         @media (max-width: 900px) {
-            .hero {
-                flex-direction: column-reverse;
-                text-align: center;
-                justify-content: center;
-                padding-top: 120px;
-            }
-
-            .hero-text {
-                max-width: 100%;
-                margin-top: 40px;
-            }
-
-            .hero-img {
-                width: 280px;
-                height: 280px;
-            }
-
-            .stats {
-                flex-direction: column;
-                gap: 30px;
-            }
-
-            .btn-group {
-                justify-content: center;
-            }
+            .hero { flex-direction: column-reverse; text-align: center; padding-top: 120px; }
+            .hero-text { max-width: 100%; margin-top: 30px; }
+            .hero-img { width: 260px; height: 260px; }
+            .btn-group { justify-content: center; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Canvas overlay for background animated floating particles -->
+    <!-- RGB Custom Cursor Elements -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
     <canvas id="particleCanvas"></canvas>
 
-    <!-- Background Animated Blurs -->
-    <div class="glow glow-1"></div>
-    <div class="glow glow-2"></div>
-
-    <!-- Navigation Header -->
+    <!-- Header -->
     <header>
         <div class="logo">Raj Goswami</div>
         <nav>
             <a href="#home">Home</a>
-            <a href="#about">About</a>
+            <a href="#chalisa">हनुमान चालीसा</a>
             <a href="#gallery">Gallery</a>
             <a href="#contact">Contact</a>
+            <button class="theme-btn" onclick="toggleTheme()">
+                <i class="fas fa-moon" id="themeIcon"></i> <span id="themeText">Dark</span>
+            </button>
         </nav>
     </header>
 
@@ -432,113 +337,215 @@
         <div class="hero-text">
             <span class="badge">Founder & Owner</span>
             <h1>Hi, I'm <span>Raj Goswami</span></h1>
-            <p>Welcome to my official digital space. I am a visionary entrepreneur and creator dedicated to building impactful digital experiences, leading modern ventures, and bringing creative ideas to life.</p>
-            
-            <!-- Styled Button Group -->
+            <p>Welcome to my official digital space. Dedicated to building impactful digital experiences, leading modern ventures, and bringing creative ideas to life.</p>
             <div class="btn-group">
                 <a href="#gallery" class="btn">Explore Gallery <i class="fas fa-arrow-right"></i></a>
                 <a href="game.html" class="btn btn-game">Play Game <i class="fas fa-gamepad"></i></a>
             </div>
         </div>
         <div class="hero-img">
-            <!-- Owner Profile Image -->
             <img src="gg.png" alt="Raj Goswami - Owner">
         </div>
     </section>
 
-    <!-- Stats Section -->
-    <section class="stats" id="about">
-        <div class="stat-box">
-            <h2>5+</h2>
-            <p>Years Experience</p>
-        </div>
-        <div class="stat-box">
-            <h2>50+</h2>
-            <p>Projects Completed</p>
-        </div>
-        <div class="stat-box">
-            <h2>100%</h2>
-            <p>Client Satisfaction</p>
-        </div>
-        <div class="stat-box">
-            <h2>10+</h2>
-            <p>Awards Won</p>
+    <!-- Hanuman Chalisa Section -->
+    <section class="chalisa-section" id="chalisa">
+        <div class="chalisa-card">
+            <div class="bhakti-header">
+                <img src="hh.jpg" onerror="this.onerror=null; this.src='https://i.ibb.co/6N6s7pX/hh.jpg';" alt="Shree Hanuman Ji" class="hanuman-img">
+                <h2 class="chalisa-title">🚩 श्री हनुमान चालीसा 🚩</h2>
+                
+                <!-- Guaranteed Working Web Audio Synthesizer Flute Player -->
+                <button class="btn btn-audio" id="musicToggleBtn" onclick="toggleAudio()">
+                    <i class="fas fa-play" id="audioIcon"></i> <span id="audioText">Play Relaxing Music (ON)</span>
+                </button>
+            </div>
+
+            <div class="chalisa-text">
+                <strong>॥ दोहा ॥</strong><br>
+                श्रीगुरु चरन सरोज रज निज मन मुकुरु सुधारि।<br>
+                बरनऊ रघुबर बिमल जसु जो दायकु फल चारि॥<br>
+                बुद्धिहीन तनु जानिके सुमिरौ पवन-कुमार।<br>
+                बल बुद्धि बिद्या देहु मोहिं हरहु कलेस बिकार॥<br><br>
+
+                <strong>॥ चौपाई ॥</strong><br>
+                जय हनुमान ज्ञान गुन सागर। जय कपीस तिहुं लोक उजागर॥<br>
+                रामदूत अतुलित बल धामा। अंजनि-पुत्र पवनसुत नामा॥<br>
+                महाबीर बिक्रम बजरंगी। कुमति निवार सुमति के संगी॥<br>
+                कंचन बरन बिराज सुबेसा। कानन कुंडल कुंचित केसा॥<br>
+                हाथ बज्र ओ ध्वजा बिराजै। कांधे मूंज जनेऊ साजै॥<br>
+                संकर सुवन केसरीनंदन। तेज प्रताप महा जग बन्दन॥<br>
+                विद्यावान गुनी अति चातुर। राम काज करिबे को आतुर॥<br>
+                प्रभु चरित्र सुनिबे को रसिया। राम लखन सीता मन बसिया॥<br>
+                सूक्ष्म रूप धरि सियहिं दिखावा। बिकट रूप धरि लंक जरावा॥<br>
+                भीम रूप धरि असुर संहारे। रामचंद्र के काज संवारे॥<br>
+                लाय सजीवन लखन जियाये। श्रीरघुबीर हरषि उर लाये॥<br>
+                रघुपति कीन्ही बहुत बड़ाई। तुम मम प्रिय भरतहि सम भाई॥<br>
+                सहस बदन तुम्हरो जस गावैं। अस कहि श्रीपति कण्ठ लगावैं॥<br>
+                सनकादिक ब्रह्मादि मुनीसा। नारद सारद सहित अहीसा॥<br>
+                जम कुबेर दिगपाल जहां ते। कबि कोबिद कहि सके कहां ते॥<br>
+                तुम उपकार सुग्रीवहिं कीन्हा। राम मिलाय राज पद दीन्हा॥<br>
+                तुम्हरो मंत्र बिभीषन माना। लंकेस्वर भए सब जग जाना॥<br>
+                जुग सहस्र जोजन पर भानू। लील्यो ताहि मधुर फल जानू॥<br>
+                प्रभु मुद्रिका मेलि मुख माहीं। जलधि लांघि गये अचरज नाहीं॥<br>
+                दुर्गम काज जगत के जेते। सुगम अनुग्रह तुम्हरे तेते॥<br>
+                राम दुआरे तुम रखवारे। होत न आज्ञा बिनु पैसारे॥<br>
+                सब सुख लहै तुम्हारी सरना। तुम रक्षक काहू को डर ना॥<br>
+                आपन तेज सम्हारो आपै। तीनों लोक हांक तें कांपै॥<br>
+                भूत पिसाच निकट नहिं आवै। महाबीर जब नाम सुनावै॥<br>
+                नासै रोग हरै सब पीरा। जपत निरंतर हनुमत बीरा॥<br>
+                संकट तें हनुमान छुड़ावै। मन क्रम बचन ध्यान जो लावै॥<br>
+                सब पर राम तपस्वी राजा। तिन के काज सकल तुम साजा॥<br>
+                और मनोरथ जो कोई लावै। सोइ अमित जीवन फल पावै॥<br>
+                चारों जुग परताप तुम्हारा। है परसिद्ध जगत उजियारा॥<br>
+                साधु सन्त के तुम रखवारे। असुर निकंदन राम दुलारे॥<br>
+                अष्ट सिद्धि नौ निधि के दाता। अस बर दीन्ह जानकी माता॥<br>
+                राम रसायन तुम्हरे पासा। सदा रहो रघुपति के दासा॥<br>
+                तुम्हरे भजन राम को पावै। जनम जनम के दुख बिसरावै॥<br>
+                अन्त काल रघुबर पुर जाई। जहां जन्म हरि-भक्त कहाई॥<br>
+                और देवता चित्त न धरई। हनुमत सेइ सर्ब सुख करई॥<br>
+                संकट कटै मिटै सब पीरा। जो सुमिरै हनुमत बलबीरा॥<br>
+                जै जै जै हनुमान गोसाईं। कृपा करहु गुरुदेव की नाईं॥<br>
+                जो सत बार पाठ कर कोई। छूटहि बंदि महा सुख होई॥<br>
+                जो यह पढ़ै हनुमान चालीसा। होय सिद्ध साखी गौरीसा॥<br>
+                तुलसीदास सदा हरि चेरा। कीजै नाथ हृदय मंह डेरा॥<br><br>
+
+                <strong>॥ दोहा ॥</strong><br>
+                पवनतनय संकट हरन मंगल मूरति रूप।<br>
+                राम लखन सीता सहित हृदय बसहु सुर भूप॥
+            </div>
         </div>
     </section>
 
-    <!-- Photo Gallery Section -->
+    <!-- Gallery Section -->
     <section class="gallery-section" id="gallery">
         <h2 class="section-title">Photo <span>Gallery</span></h2>
         <div class="gallery-grid">
-            
             <div class="gallery-item">
                 <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80" alt="Workspace">
-                <div class="gallery-overlay">
-                    <h3>Headquarters</h3>
-                    <p>Where ideas turn into reality</p>
-                </div>
+                <div class="gallery-overlay"><h3>Headquarters</h3><p>Where ideas turn into reality</p></div>
             </div>
-
             <div class="gallery-item">
                 <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80" alt="Team Work">
-                <div class="gallery-overlay">
-                    <h3>Leadership</h3>
-                    <p>Guiding teams to success</p>
-                </div>
+                <div class="gallery-overlay"><h3>Leadership</h3><p>Guiding teams to success</p></div>
             </div>
-
             <div class="gallery-item">
                 <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80" alt="Architecture">
-                <div class="gallery-overlay">
-                    <h3>Modern Vision</h3>
-                    <p>Building for the future</p>
-                </div>
+                <div class="gallery-overlay"><h3>Modern Vision</h3><p>Building for the future</p></div>
             </div>
-
             <div class="gallery-item">
                 <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80" alt="Events">
-                <div class="gallery-overlay">
-                    <h3>Keynote Events</h3>
-                    <p>Sharing industry insights</p>
-                </div>
+                <div class="gallery-overlay"><h3>Keynote Events</h3><p>Sharing industry insights</p></div>
             </div>
-
             <div class="gallery-item">
                 <img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=800&q=80" alt="Business">
-                <div class="gallery-overlay">
-                    <h3>Strategy</h3>
-                    <p>Planning sustainable growth</p>
-                </div>
+                <div class="gallery-overlay"><h3>Strategy</h3><p>Planning sustainable growth</p></div>
             </div>
-
             <div class="gallery-item">
                 <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80" alt="Collaboration">
-                <div class="gallery-overlay">
-                    <h3>Global Network</h3>
-                    <p>Connecting across borders</p>
-                </div>
+                <div class="gallery-overlay"><h3>Global Network</h3><p>Connecting across borders</p></div>
             </div>
-
         </div>
     </section>
 
     <!-- Footer -->
     <footer id="contact">
         <div class="socials">
-            <!-- Twitter/X -->
-            <a href="https://twitter.com/RajGoswamiql" target="_blank" rel="noopener noreferrer" title="Twitter"><i class="fab fa-x-twitter"></i></a>
-            <!-- Facebook -->
-            <a href="https://www.facebook.com/RajGoswami" target="_blank" rel="noopener noreferrer" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-            <!-- Instagram -->
-            <a href="https://www.instagram.com/official_raj_goswami_94" target="_blank" rel="noopener noreferrer" title="Instagram"><i class="fab fa-instagram"></i></a>
-            <!-- WhatsApp -->
-            <a href="https://wa.me/919454327530" target="_blank" rel="noopener noreferrer" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+            <a href="https://www.youtube.com/@RajGoswami-501" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+            <a href="https://twitter.com/RajGoswamiql" target="_blank" title="Twitter"><i class="fab fa-x-twitter"></i></a>
+            <a href="https://www.facebook.com/RajGoswami" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.instagram.com/official_raj_goswami_94" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://wa.me/919454327530" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
         </div>
         <p>&copy; 2026 Raj Goswami. All Rights Reserved.</p>
     </footer>
 
-    <!-- Background Particle Script -->
+    <!-- Scripts -->
     <script>
+        // Synchronized Instant RGB Cursor
+        const dot = document.querySelector('.cursor-dot');
+        const outline = document.querySelector('.cursor-outline');
+
+        window.addEventListener('mousemove', (e) => {
+            const x = e.clientX;
+            const y = e.clientY;
+            dot.style.left = `${x}px`;
+            dot.style.top = `${y}px`;
+            outline.style.left = `${x}px`;
+            outline.style.top = `${y}px`;
+        });
+
+        // Web Audio Synthesizer Flute Generator (100% Guaranteed to Play / No External Links Required)
+        let audioCtx = null;
+        let isPlaying = false;
+        let intervalId = null;
+
+        const fluteNotes = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25, 587.33, 659.25]; // Indian Flute Scales (Sa Re Ga Ma Pa Dha Ni Sa)
+
+        function playFluteNote() {
+            if (!isPlaying || !audioCtx) return;
+
+            let osc = audioCtx.createOscillator();
+            let gain = audioCtx.createGain();
+
+            // Sine wave produces soft flute tone
+            osc.type = 'sine';
+            let note = fluteNotes[Math.floor(Math.random() * fluteNotes.length)];
+            osc.frequency.setValueAtTime(note, audioCtx.currentTime);
+
+            // Envelope for smooth ambient sound
+            gain.gain.setValueAtTime(0, audioCtx.currentTime);
+            gain.gain.linearRampToValueAtTime(0.15, audioCtx.currentTime + 0.8);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 3.0);
+
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            osc.start();
+            osc.stop(audioCtx.currentTime + 3.2);
+        }
+
+        function toggleAudio() {
+            const audioIcon = document.getElementById('audioIcon');
+            const audioText = document.getElementById('audioText');
+
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+
+            if (!isPlaying) {
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+                isPlaying = true;
+                playFluteNote();
+                intervalId = setInterval(playFluteNote, 1800);
+                audioIcon.className = 'fas fa-pause';
+                audioText.innerText = 'Pause Music (OFF)';
+            } else {
+                isPlaying = false;
+                clearInterval(intervalId);
+                audioIcon.className = 'fas fa-play';
+                audioText.innerText = 'Play Relaxing Music (ON)';
+            }
+        }
+
+        // Theme Toggle
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+            const icon = document.getElementById('themeIcon');
+            const text = document.getElementById('themeText');
+            
+            if (document.body.classList.contains('light-mode')) {
+                icon.className = 'fas fa-sun';
+                text.innerText = 'Light';
+            } else {
+                icon.className = 'fas fa-moon';
+                text.innerText = 'Dark';
+            }
+        }
+
+        // Particle Canvas Background
         const canvas = document.getElementById('particleCanvas');
         const ctx = canvas.getContext('2d');
 
@@ -550,14 +557,12 @@
         resizeCanvas();
 
         const particles = [];
-        const particleCount = 65;
-
-        for (let i = 0; i < particleCount; i++) {
+        for (let i = 0; i < 60; i++) {
             particles.push({
                 x: Math.random() * canvas.width,
                 y: Math.random() * canvas.height,
                 radius: Math.random() * 3 + 1,
-                color: Math.random() > 0.5 ? '#ff4b2b' : '#ff416c',
+                color: Math.random() > 0.5 ? '#ff4b2b' : '#ff9933',
                 vx: (Math.random() - 0.5) * 1.5,
                 vy: (Math.random() - 0.5) * 1.5
             });
@@ -565,27 +570,19 @@
 
         function animateParticles() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-
             particles.forEach(p => {
-                p.x += p.vx;
-                p.y += p.vy;
-
+                p.x += p.vx; p.y += p.vy;
                 if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
                 if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
 
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
                 ctx.fillStyle = p.color;
-                ctx.shadowBlur = 10;
-                ctx.shadowColor = p.color;
                 ctx.fill();
             });
-
             requestAnimationFrame(animateParticles);
         }
-
         animateParticles();
     </script>
-
 </body>
 </html>
