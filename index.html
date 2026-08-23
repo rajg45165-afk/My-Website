@@ -169,21 +169,54 @@
             line-height: 1.6;
         }
 
+        /* Button Container */
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
         .btn {
-            display: inline-block;
-            padding: 12px 32px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 30px;
             background: linear-gradient(45deg, var(--primary), var(--secondary));
             color: white;
             text-decoration: none;
             border-radius: 30px;
             font-weight: 600;
             box-shadow: 0 10px 20px rgba(255, 75, 43, 0.3);
-            transition: 0.3s;
+            transition: all 0.3s ease;
         }
 
         .btn:hover {
-            transform: translateY(-3px);
+            transform: translateY(-4px);
             box-shadow: 0 15px 25px rgba(255, 75, 43, 0.5);
+        }
+
+        /* Stylish Game Button */
+        .btn-game {
+            background: linear-gradient(45deg, #00f2fe, #4facfe);
+            box-shadow: 0 10px 20px rgba(0, 242, 254, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-game:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0, 242, 254, 0.6);
+        }
+
+        .btn-game i {
+            font-size: 1.1rem;
+            animation: pulseIcon 1.5s infinite alternate;
+        }
+
+        @keyframes pulseIcon {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.2); }
         }
 
         /* Profile Image Floating Animation */
@@ -367,6 +400,10 @@
                 flex-direction: column;
                 gap: 30px;
             }
+
+            .btn-group {
+                justify-content: center;
+            }
         }
     </style>
 </head>
@@ -396,7 +433,12 @@
             <span class="badge">Founder & Owner</span>
             <h1>Hi, I'm <span>Raj Goswami</span></h1>
             <p>Welcome to my official digital space. I am a visionary entrepreneur and creator dedicated to building impactful digital experiences, leading modern ventures, and bringing creative ideas to life.</p>
-            <a href="#gallery" class="btn">Explore Gallery <i class="fas fa-arrow-right"></i></a>
+            
+            <!-- Styled Button Group -->
+            <div class="btn-group">
+                <a href="#gallery" class="btn">Explore Gallery <i class="fas fa-arrow-right"></i></a>
+                <a href="game.html" class="btn btn-game">Play Game <i class="fas fa-gamepad"></i></a>
+            </div>
         </div>
         <div class="hero-img">
             <!-- Owner Profile Image -->
