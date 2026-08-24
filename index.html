@@ -502,6 +502,9 @@
 
     <canvas id="particleCanvas"></canvas>
 
+    <!-- ऑडियो एलिमेंट (gana.mpeg) -->
+    <audio id="chalisaAudio" src="gana.mpeg" loop></audio>
+
     <header>
         <div class="logo">
             <marquee behavior="scroll" direction="left" scrollamount="4">
@@ -571,8 +574,8 @@
                 <img src="hh.jpg" alt="Shree Hanuman Ji" class="hanuman-img">
                 <h2 class="chalisa-title">🚩 श्री हनुमान चालीसा 🚩</h2>
                 
-                <button class="btn-audio" id="musicToggleBtn" onclick="toggleOrganMusic()">
-                    <i class="fas fa-play" id="audioIcon"></i> <span id="audioText">Play Soft Music</span>
+                <button class="btn-audio" id="musicToggleBtn" onclick="toggleSong()">
+                    <i class="fas fa-play" id="audioIcon"></i> <span id="audioText">Play Song</span>
                 </button>
             </div>
 
@@ -584,7 +587,7 @@
                 बल बुद्धि बिद्या देहु मोहिं हरहु कलेस बिकार॥<br><br>
 
                 <strong>॥ चौपाई ॥</strong><br>
-                जय हनुमान ज्ञान गुन सागर। जय kपीस तिहुं लोक उजागर॥<br>
+                जय हनुमान ज्ञान गुन सागर। जय कपीस तिहुं लोक उजागर॥<br>
                 रामदूत अतुलित बल धामा। अंजनि-पुत्र पवनसुत नामा॥<br>
                 महाबीर बिक्रम बजरंगी। कुमति निवार सुमति के संगी॥<br>
                 कंचन बरन बिराज सुबेसा। कानन कुंडल कुंचित केसा॥<br>
@@ -684,65 +687,23 @@
             outline.style.top = `${e.clientY}px`;
         });
 
-        let audioCtx = null;
-        let isPlaying = false;
-        let noteIndex = 0;
-        let timerId = null;
-
-        const softNotes = [261.63, 293.66, 329.63, 392.00, 440.00, 392.00, 329.63, 293.66];
-
-        function playSoftNote() {
-            if (!isPlaying || !audioCtx) return;
-
-            let now = audioCtx.currentTime;
-            let freq = softNotes[noteIndex];
-            noteIndex = (noteIndex + 1) % softNotes.length;
-
-            let osc = audioCtx.createOscillator();
-            let gain = audioCtx.createGain();
-            let filter = audioCtx.createBiquadFilter();
-
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(freq, now);
-
-            filter.type = 'lowpass';
-            filter.frequency.setValueAtTime(600, now);
-
-            gain.gain.setValueAtTime(0.001, now);
-            gain.gain.linearRampToValueAtTime(0.04, now + 0.3);
-            gain.gain.exponentialRampToValueAtTime(0.0001, now + 1.2);
-
-            osc.connect(filter);
-            filter.connect(gain);
-            gain.connect(audioCtx.destination);
-
-            osc.start(now);
-            osc.stop(now + 1.3);
-
-            timerId = setTimeout(playSoftNote, 800);
-        }
-
-        function toggleOrganMusic() {
+        // असली gana.mpeg प्ले या पॉज करने का फंक्शन
+        function toggleSong() {
+            const audioElem = document.getElementById('chalisaAudio');
             const audioIcon = document.getElementById('audioIcon');
             const audioText = document.getElementById('audioText');
 
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-
-            if (!isPlaying) {
-                if (audioCtx.state === 'suspended') {
-                    audioCtx.resume();
-                }
-                isPlaying = true;
-                playSoftNote();
-                audioIcon.className = 'fas fa-pause';
-                audioText.innerText = 'Pause Music';
+            if (audioElem.paused) {
+                audioElem.play().then(() => {
+                    audioIcon.className = 'fas fa-pause';
+                    audioText.innerText = 'Pause Song';
+                }).catch(err => {
+                    console.log("Audio play error:", err);
+                });
             } else {
-                isPlaying = false;
-                clearTimeout(timerId);
+                audioElem.pause();
                 audioIcon.className = 'fas fa-play';
-                audioText.innerText = 'Play Soft Music';
+                audioText.innerText = 'Play Song';
             }
         }
 
