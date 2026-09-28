@@ -168,6 +168,7 @@
         nav a:nth-child(3) { animation-delay: -1.6s; animation-duration: 3.8s; }
         nav a:nth-child(4) { animation-delay: -2.4s; animation-duration: 5s; }
         nav a:nth-child(5) { animation-delay: -3.2s; animation-duration: 4.2s; }
+        nav a:nth-child(6) { animation-delay: -4.0s; animation-duration: 4.6s; }
 
         nav a:hover {
             transform: translateY(-3px) scale(1.05);
@@ -295,6 +296,52 @@
             margin-bottom: 1rem;
         }
         .skill-card h3 { font-size: 1.1rem; }
+
+        /* ===== Study Box (History) Styles ===== */
+        .study-section {
+            padding: 3rem 8%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .study-box {
+            background: linear-gradient(135deg, rgba(30, 20, 50, 0.95), rgba(15, 12, 32, 0.95));
+            border: 2px solid transparent;
+            border-radius: 18px;
+            padding: 2rem;
+            width: 100%;
+            max-width: 850px;
+            backdrop-filter: blur(10px);
+            animation: rgbBoxBorder 5s linear infinite;
+        }
+
+        .study-box-title {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            color: var(--primary);
+        }
+
+        .study-box-content {
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: var(--text-light);
+        }
+
+        .study-box-content ul {
+            margin-left: 1.5rem;
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .study-box-content li {
+            margin-bottom: 0.4rem;
+            color: var(--text-gray);
+        }
+
+        .study-box-content strong {
+            color: var(--text-light);
+        }
 
         .chalisa-section {
             padding: 5rem 8%;
@@ -473,7 +520,7 @@
                 margin-top: 1.5rem;
             }
 
-            .skills-section, .chalisa-section, .gallery-section {
+            .skills-section, .study-section, .chalisa-section, .gallery-section {
                 padding: 3rem 5%;
             }
 
@@ -514,6 +561,7 @@
         <nav id="navMenu">
             <a href="#home">Home</a>
             <a href="#skills">Skills</a>
+            <a href="#study-box">इतिहास (History)</a>
             <a href="#chalisa">हनुमान चालीसा</a>
             <a href="#gallery">Gallery</a>
             <a href="#contact">Contact</a>
@@ -564,6 +612,26 @@
             <div class="skill-card">
                 <i class="fas fa-code-branch"></i>
                 <h3>Git & GitHub</h3>
+            </div>
+        </div>
+    </section>
+
+    <!-- Study Box Section: History (इतिहास - भारतीय राष्ट्रीय आंदोलन) -->
+    <section class="study-section" id="study-box">
+        <div class="study-box">
+            <h2 class="study-box-title">📜 Study Box: भारतीय इतिहास (Indian History)</h2>
+            <div class="study-box-content">
+                <p><strong>भारतीय राष्ट्रीय आंदोलन (1857 - 1947):</strong> आधुनिक भारतीय इतिहास का यह काल देश की स्वतंत्रता के लिए किए गए संघर्ष, क्रांतियों और महापुरुषों के बलिदानों का स्वर्ण युग है।</p>
+                <br>
+                <p><strong>प्रमुख चरण और घटनाएं:</strong></p>
+                <ul>
+                    <li><strong>1857 की क्रांति:</strong> ब्रिटिश ईस्ट इंडिया कंपनी के खिलाफ भारत का पहला महान स्वतंत्रता संग्राम (मंगल पांडे, रानी लक्ष्मीबाई और तात्या टोपे की प्रमुख भूमिका)।</li>
+                    <li><strong>भारतीय राष्ट्रीय कांग्रेस की स्थापना (1885):</strong> ए.ओ. ह्यूम द्वारा स्थापित, जिसके पहले अध्यक्ष व्योमेश चंद्र बनर्जी थे।</li>
+                    <li><strong>गांधीजी का आगमन और असहयोग आंदोलन (1920):</strong> महात्मा गांधी के नेतृत्व में ब्रिटिश शासन के विरुद्ध अहिंसक और सत्याग्रह आधारित जन-आंदोलन।</li>
+                    <li><strong>सविनय अवज्ञा आंदोलन एवं दांडी मार्च (1930):</strong> नमक कानून तोड़कर ब्रिटिश साम्राज्य को चुनौती देना।</li>
+                    <li><strong>भारत छोड़ो आंदोलन (1942):</strong> "करो या मरो" (Do or Die) के नारे के साथ अंग्रेजों भारत छोड़ो का राष्ट्रव्यापी आह्वान।</li>
+                    <li><strong>स्वतंत्रता प्राप्ति (15 अगस्त 1947):</strong> सदियों की गुलामी के बाद अंततः भारत को ब्रिटिश राज से पूर्ण स्वतंत्रता मिली।</li>
+                </ul>
             </div>
         </div>
     </section>
